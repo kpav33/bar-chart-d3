@@ -1,4 +1,5 @@
 // || GENERAL
+/*
 :root {
     --background-app: #151515;
     --background-panel: #301B3F;
@@ -32,3 +33,24 @@ html, body {
     background: var(--background-panel);
 }
 
+svg {
+    background: lightblue;
+    width: 50%;
+}
+
+*/
+  
+#root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+svg {
+    background: #eee;
+    overflow: visible;
+    margin-bottom: 2rem;
+    display: block;
+}
