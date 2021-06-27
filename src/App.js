@@ -8,6 +8,8 @@ import {
   scaleTime,
   max,
   min,
+  format,
+  axisLeft,
 } from "d3";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -18,15 +20,22 @@ function App() {
   const [dataObject, setDataObject] = useState([]);
   const svgRef = useRef();
 
+  // Source
   const dataUrl =
     "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json";
+
+  // Dimensions
+  const width = 800;
+  const height = 500;
+  const padding = 60;
 
   useEffect(() => {
     fetch(dataUrl)
       .then((response) => response.json())
       .then((data) => {
-        setData(data.data.map((value) => value[1]));
-        setYears(data.data.map((value) => new Date(value[0])));
+        //setData(data.data.map((value) => value[1]));
+        //setYears(data.data.map((value) => new Date(value[0])));
+        setData(data.data);
         setDataObject(
           data.data.map((d) => ({
             date: new Date(d[0]),
@@ -36,42 +45,16 @@ function App() {
       });
   }, []);
 
-  console.log(years);
+  //console.log(years);
   console.log(dataObject);
+  console.log(data);
 
   useEffect(() => {
     // console.log(svgRef);
-    const svg = select(svgRef.current).attr("width", 900).attr("height", 500);
-
-    // scaleTime
-    const xScale = scaleTime()
-      .domain([min(years, (d) => d), max(data, (d) => d)])
-      .range([0, 900]);
-
-    /*const xScale = scaleLinear()
-      .domain([0, max(data, (d) => d)])
-      .range([0, 500]);*/
-
-    const yScale = scaleLinear()
-      .domain([0, max(data, (d) => d)])
-      .range([500, 0]);
-
-    const xAxis = axisBottom(xScale);
-    svg.select(".x-axis").style("transform", "translateY(500px)").call(xAxis);
-
-    const yAxis = axisRight(yScale);
-    svg.select(".y-axis").style("transform", "translateX(900px)").call(yAxis);
-
-    svg
-      .selectAll(".bar")
-      .data(data)
-      .join("rect")
-      .attr("class", "bar")
-      .attr("x", (d, i) => xScale(d))
-      .attr("y", yScale)
-      .attr("width", (d, index) => xScale(d))
-      .attr("height", (d, index) => 500 - yScale(d));
-  }, [data]);
+    const svg = select(svgRef.current)
+      .attr("width", width)
+      .attr("height", height);
+  }, [dataObject]);
 
   return (
     <>
